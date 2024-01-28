@@ -136,42 +136,43 @@ class FirebaseService with ChangeNotifier {
     return await task.ref.getDownloadURL();
   }
 
-  Future<void> updateHeroImage(String docID,String url)async {
-    await _firestore.collection("business").doc("products").collection("allProducts").doc(docID).update({"heroImageUrl": url});
+  Future<void> updateHeroImage(String url)async {
+    await _firestore.collection("business").doc("products").collection("allProducts").doc("HeroImage").update({"imageUrl": url});
     notifyListeners();
   }
-  Future<void> updateFtr1(String docID,String url)async {
-    await _firestore.collection("business").doc("products").collection("allProducts").doc(docID).update({"featureImage1Url": url});
+  Future<void> updateFtr1(ProductModel product)async {
+    await _firestore.collection("business").doc("products").collection("allProducts").doc("Feature1Product").set(product.toMap());
     notifyListeners();
   }
-  Future<void> updateFtr2(String docID,String url)async {
-    await _firestore.collection("business").doc("products").collection("allProducts").doc(docID).update({"featureImage2Url": url});
+  Future<void> updateFtr2(ProductModel product)async {
+    await _firestore.collection("business").doc("products").collection("allProducts").doc("Feature2Product").set(product.toMap());
     notifyListeners();
   }
-  Future<void> updateExc1(String docID,String url)async {
-    await _firestore.collection("business").doc("products").collection("allProducts").doc(docID).update({"exclCollection1Url": url});
+  Future<void> updateExc1(ProductModel product)async {
+    await _firestore.collection("business").doc("products").collection("allProducts").doc("Exclusive1Product").set(product.toMap());
     notifyListeners();
   }
-  Future<void> updateExc2(String docID,String url)async {
-    await _firestore.collection("business").doc("products").collection("allProducts").doc(docID).update({"exclCollection2Url": url});
+  Future<void> updateExc2(ProductModel product)async {
+    await _firestore.collection("business").doc("products").collection("allProducts").doc("Exclusive2Product").set(product.toMap());
     notifyListeners();
   }
-  Future<void> updateExc3(String docID,String url)async {
-    await _firestore.collection("business").doc("products").collection("allProducts").doc(docID).update({"exclCollection3Url": url});
+  Future<void> updateExc3(ProductModel product)async {
+    await _firestore.collection("business").doc("products").collection("allProducts").doc("Exclusive3Product").set(product.toMap());
     notifyListeners();
   }
-  Future<void> updateExc4(String docID,String url)async {
-    await _firestore.collection("business").doc("products").collection("allProducts").doc(docID).update({"exclCollection4Url": url});
-    notifyListeners();
-  }
-
-  Future<void> updateExcText(String docID,String url)async {
-    await _firestore.collection("business").doc("products").collection("allProducts").doc(docID).update({"exclCollectionText": url});
+  Future<void> updateExc4(ProductModel product)async {
+    await _firestore.collection("business").doc("products").collection("allProducts").doc("Exclusive4Product").set(product.toMap());
     notifyListeners();
   }
 
-  Future<void> updateCustomerDeals(String docID,String url)async {
-    await _firestore.collection("business").doc("products").collection("allProducts").doc(docID).update({"customerDealsText": url});
+
+  Future<void> updateExcText(String text)async {
+    await _firestore.collection("business").doc("products").collection("allProducts").doc("ExclusiveCollectionText").update({"text": text});
+    notifyListeners();
+  }
+
+  Future<void> updateCustomerDeals(String text)async {
+    await _firestore.collection("business").doc("products").collection("allProducts").doc("CustomerDealsText").update({"text": text});
     notifyListeners();
   }
 
@@ -186,11 +187,89 @@ class FirebaseService with ChangeNotifier {
     return userCredentials;
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getHomePostData() {
-    Stream<QuerySnapshot<Map<String, dynamic>>> data = _firestore.collection(
-        'business').doc('products').collection('allProducts')
-        .get().asStream();
-    return data;
+  Future<String> getHeroImage() async {
+    DocumentSnapshot<Map<String, dynamic>> snapshot = await _firestore
+        .collection("business")
+        .doc("products")
+        .collection("allProducts")
+        .doc("HeroImage")
+        .get();
+    return snapshot.get("imageUrl");
+  }
+
+  Future<ProductModel> getFeature1Product() async {
+    DocumentSnapshot<Map<String, dynamic>> snapshot = await _firestore
+        .collection("business")
+        .doc("products")
+        .collection("allProducts")
+        .doc("Feature1Product")
+        .get();
+    return ProductModel.fromDocMap(snapshot);
+  }
+  Future<ProductModel> getFeature2Product() async {
+    DocumentSnapshot<Map<String, dynamic>> snapshot = await _firestore
+        .collection("business")
+        .doc("products")
+        .collection("allProducts")
+        .doc("Feature2Product")
+        .get();
+    return ProductModel.fromDocMap(snapshot);
+  }
+
+  Future<String> getExclusiveCollectionText() async {
+    DocumentSnapshot<Map<String, dynamic>> snapshot = await _firestore
+        .collection("business")
+        .doc("products")
+        .collection("allProducts")
+        .doc("ExclusiveCollectionText")
+        .get();
+    return snapshot.get('text');
+  }
+  Future<String> getCustomerDealsText() async {
+    DocumentSnapshot<Map<String, dynamic>> snapshot = await _firestore
+        .collection("business")
+        .doc("products")
+        .collection("allProducts")
+        .doc("CustomerDealsText")
+        .get();
+    return snapshot.get('text');
+  }
+
+  Future<ProductModel> getExclusive1Product() async {
+    DocumentSnapshot<Map<String, dynamic>> snapshot = await _firestore
+        .collection("business")
+        .doc("products")
+        .collection("allProducts")
+        .doc("Exclusive1Product")
+        .get();
+    return ProductModel.fromDocMap(snapshot);
+  }
+  Future<ProductModel> getExclusive2Product() async {
+    DocumentSnapshot<Map<String, dynamic>> snapshot = await _firestore
+        .collection("business")
+        .doc("products")
+        .collection("allProducts")
+        .doc("Exclusive2Product")
+        .get();
+    return ProductModel.fromDocMap(snapshot);
+  }
+  Future<ProductModel> getExclusive3Product() async {
+    DocumentSnapshot<Map<String, dynamic>> snapshot = await _firestore
+        .collection("business")
+        .doc("products")
+        .collection("allProducts")
+        .doc("Exclusive3Product")
+        .get();
+    return ProductModel.fromDocMap(snapshot);
+  }
+  Future<ProductModel> getExclusive4Product() async {
+    DocumentSnapshot<Map<String, dynamic>> snapshot = await _firestore
+        .collection("business")
+        .doc("products")
+        .collection("allProducts")
+        .doc("Exclusive4Product")
+        .get();
+    return ProductModel.fromDocMap(snapshot);
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getEmails() {
